@@ -86,13 +86,13 @@ class Model():
         # aggregation to return the predictions (Ytest)
 
         # undo aggregation:
-        #future_starts = []
-        #for col in range(ycol0, Xtest.shape[1]):
-        #    init = Xtest[0,col]
-        #    for row in range(1, Xtest.shape[0]):
-        #        Xtest[row,col] -= init
-        #        init += Xtest[row,col]
-        #    future_starts.append(init)
+        future_starts = []
+        for col in range(ycol0, Xtest.shape[1]):
+            init = Xtest[0,col]
+            for row in range(1, Xtest.shape[0]):
+                Xtest[row,col] -= init
+                init += Xtest[row,col]
+            future_starts.append(init)
 
         for col in range(ycol0, Xtest.shape[1]):
             #print(col)
@@ -145,12 +145,12 @@ class Model():
         #print(Ytest.shape)    # typically (7, 57)
 
         # reconstruct aggregated predictions
-        #for col in range(ycol0, Xtest.shape[1]):
-        #    init = future_starts[col]
-        #    for row in range (0, num_predicted_frames - 1):
-        #        tinc = init
-        #        init += Ytest[row,col]
-        #        Ytest[row,col] += tinc
+        for col in range(ycol0, Xtest.shape[1]):
+            init = future_starts[col]
+            for row in range (0, num_predicted_frames - 1):
+                tinc = init
+                init += Ytest[row,col]
+                Ytest[row,col] += tinc
 
 
         end = time.time()
