@@ -1,0 +1,3 @@
+This is a small subset of the SNCF public data, for test purposes only.
+Data are licenced according to http://vvlibri.org/fr/licence/odbl-10/legalcode/unofficial.
+See also: https://data.sncf.com/pages/cgu/, https://opendata.stif.info/terms/terms-and-conditions/.
