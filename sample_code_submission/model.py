@@ -9,9 +9,9 @@ import random
 
 ###############################################################################################################
 # need rpy2 to call R from python
-import rpy2
-import rpy2.robjects as robjects
-from rpy2.robjects.packages import importr
+#import rpy2
+#import rpy2.robjects as robjects
+#from rpy2.robjects.packages import importr
 ################################################################################################################
 
 class Model():
@@ -52,7 +52,10 @@ class Model():
         
         ######################        
         # import rpy2's package module
+        import rpy2
+        import rpy2.robjects as robjects
         import rpy2.robjects.packages as rpackages
+        from rpy2.robjects.packages import importr
 
         # import R's "base" package
         base = rpackages.importr('base')
@@ -69,12 +72,16 @@ class Model():
         forecast = importr('forecast', lib_loc = rpy2.__path__[0])
 
         ts = robjects.r('ts')
+        
+        #from rpy2.robjects.vectors import FloatVector
+        #from rpy2.robjects.vectors import IntVector
+        #from rpy2.robjects.vectors import BoolVector
 
-        from rpy2.robjects.vectors import FloatVector
-        from rpy2.robjects.vectors import IntVector
-        from rpy2.robjects.vectors import BoolVector
-
+        #from rpy2.robjects import pandas2ri
+        
         from rpy2.robjects import pandas2ri
+        from rpy2.robjects import vectors
+
         pandas2ri.activate()
         ######################        
         
@@ -97,7 +104,7 @@ class Model():
         for col in range(ycol0, Xtest.shape[1]):
             #print(col)
             dtp = num_predicted_frames - 1     # days to predict
-            ndpat = num_predicted_frames - 1   # number days to predict at a time
+            ndpat = num_predicted_frames   # number days to predict at a time
             dat = Xtest[1:,col]
             #print(dat)
             #print(len(dat))
@@ -137,6 +144,11 @@ class Model():
             #print("best params = ", best_params)
             #print("best opts = ", best_opts)
             fit2 = forecast.Arima( f, order = best_params, xreg = robjects.r("NULL"), include_mean = best_opts[0], include_drift = best_opts[1], biasadj = False, method = "ML", model = robjects.r("NULL"))
+        #    print(forecast.forecast(fit2, ndpat))
+        #    print(forecast.forecast(fit2, ndpat)[0])
+        #    print(forecast.forecast(fit2, ndpat)[1])
+        #    print(forecast.forecast(fit2, ndpat)[2])
+        #    print(forecast.forecast(fit2, ndpat)[3])
             Ytest[:,col] = forecast.forecast(fit2, ndpat)[3]
             #print(Ytest)
 
